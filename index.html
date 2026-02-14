@@ -13,32 +13,46 @@
             overflow-y: auto; padding-top: 20px; padding-bottom: 20px;
             
             /* ARKA PLAN FOTOĞRAFI AYARLARI */
-            /* Fotoğrafın üzerine hafif karanlık bir filtre atar ki kart okunsun */
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('IMG_3163.jpeg');
-            background-size: cover;      /* Tüm ekranı kapla */
-            background-position: center; /* Ortala */
+            background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Kaydırırken arka plan sabit kalsın */
+            background-attachment: fixed;
         }
         .card { 
-            background: rgba(255, 255, 255, 0.95); /* Hafif saydam beyaz kart */
+            /* KARTIN SAYDAMLIĞI ARTTIRILDI (0.80) */
+            background: rgba(255, 255, 255, 0.80); 
             padding: 30px; 
             border-radius: 30px; 
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); 
             text-align: center; width: 85%; max-width: 400px; 
             position: relative; z-index: 10;
             margin: auto;
-            backdrop-filter: blur(5px); /* Kartın arkasını hafif bulanıklaştır */
+            backdrop-filter: blur(8px); /* Bulanıklık efekti arttırıldı */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* İnce bir çerçeve eklendi */
         }
-        h1 { color: #d63384; font-size: 26px; line-height: 1.3; margin-bottom: 20px; }
-        p { color: #555; font-size: 18px; font-style: italic; margin-bottom: 25px; }
+        /* YAZILARA GÖLGE EKLENDİ VE RENKLERİ KOYULAŞTIRILDI */
+        h1 { 
+            color: #d63384; 
+            font-size: 26px; 
+            line-height: 1.3; 
+            margin-bottom: 20px; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        p { 
+            color: #333; /* Daha koyu gri */
+            font-size: 18px; 
+            font-style: italic; 
+            margin-bottom: 25px; 
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
         .btns { display: flex; justify-content: center; gap: 20px; height: 50px; position: relative; margin-bottom: 25px;}
-        button { padding: 12px 30px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        button { padding: 12px 30px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         button:active { transform: scale(0.95); }
-        #yesBtn { background-color: #ff4d6d; color: white; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
+        #yesBtn { background-color: #ff4d6d; color: white; }
         #noBtn { background-color: #e9ecef; color: #495057; position: absolute; left: 55%; transition: 0.3s ease; }
         #success { display: none; padding-bottom: 20px; }
-        .gift { font-size: 60px; margin-top: 20px; }
+        .gift { font-size: 60px; margin-top: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
         
         /* Video Alanı */
         .video-container { margin-top: 25px; border-radius: 15px; overflow: hidden; height: 100px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
@@ -81,9 +95,6 @@
         // Hayır butonu kaçma mantığı
         const move = () => {
             const card = document.querySelector('.card');
-            
-            // Ekran sınırları içinde rastgele bir yer belirle
-            // Butonun kartın üzerine gelmemesi için biraz daha geniş alan bırakıyoruz
             const maxX = window.innerWidth - no.offsetWidth - 20;
             const maxY = window.innerHeight - no.offsetHeight - 20;
 
@@ -93,7 +104,7 @@
             no.style.position = 'fixed';
             no.style.left = Math.max(10, newX) + 'px';
             no.style.top = Math.max(10, newY) + 'px';
-            no.style.zIndex = '1000'; // Kartın üstünde görünsün
+            no.style.zIndex = '1000';
         };
 
         no.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
@@ -125,4 +136,3 @@
     </script>
 </body>
 </html>
-
