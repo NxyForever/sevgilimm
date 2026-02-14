@@ -3,31 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Seni Çok Seviyorum</title>
+    <title>Nilay'a Özel Sürpriz</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { 
-            margin: 0; padding: 0; height: 100vh; 
+            margin: 0; padding: 0; min-height: 100vh; 
             display: flex; justify-content: center; align-items: center; 
             background-color: #ffccd5; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            overflow: hidden; 
+            overflow-y: auto;
         }
         .card { 
-            background: white; padding: 30px; border-radius: 30px; 
+            background: white; padding: 25px; border-radius: 30px; 
             box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); 
             text-align: center; width: 85%; max-width: 400px; 
             position: relative; z-index: 10;
+            margin: 20px 0;
         }
-        h1 { color: #d63384; font-size: 24px; line-height: 1.3; margin-bottom: 15px; }
-        p { color: #666; font-size: 16px; font-style: italic; margin-bottom: 20px; }
-        .btns { display: flex; justify-content: center; gap: 20px; height: 50px; position: relative; }
-        button { padding: 12px 25px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        h1 { color: #d63384; font-size: 24px; line-height: 1.3; margin-bottom: 10px; }
+        p { color: #666; font-size: 16px; font-style: italic; margin-bottom: 15px; }
+        .btns { display: flex; justify-content: center; gap: 20px; height: 50px; position: relative; margin-bottom: 15px;}
+        button { padding: 10px 20px; border: none; border-radius: 50px; font-size: 15px; font-weight: bold; cursor: pointer; }
         #yesBtn { background-color: #ff4d6d; color: white; }
         #noBtn { background-color: #e9ecef; color: #495057; position: absolute; left: 55%; transition: 0.1s; }
         #success { display: none; }
-        .gift { font-size: 50px; margin-top: 10px; }
-        .spotify-container { margin-top: 20px; border-radius: 12px; overflow: hidden; }
+        .gift { font-size: 40px; margin-top: 10px; }
+        .video-container { margin-top: 15px; border-radius: 15px; overflow: hidden; height: 100px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .photo-container {
+            margin-bottom: 15px; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); max-height: 250px;
+        }
+        .photo-container img { width: 100%; height: auto; display: block; object-fit: cover; object-position: center; }
     </style>
 </head>
 <body>
@@ -35,7 +41,12 @@
     <div class="card">
         <div id="ask">
             <h1>Nilayımmmmmmm 💐</h1>
-            <p>Sevgililer Gününü Beraber kutlayalım mı...? 🎀</p>
+            
+            <div class="photo-container">
+                <img src="IMG_3163.jpeg" alt="Bizim Fotoğrafımız">
+            </div>
+
+            <p>Sevgililer Gününü beraber kutlayalım mı...? 🎀</p>
             <div class="btns">
                 <button id="yesBtn">Evet</button>
                 <button id="noBtn">Hayır</button>
@@ -43,28 +54,20 @@
         </div>
 
         <div id="success">
-            <h1>Seni Çok Seviyorumm Karımmmmm Sevgililer Günümüz Kutlu Olsunnn 💐</h1>
-            <p>İyiki benimsin :)</p>
+            <h1>Seni Çok Seviyorumm Karımmmmm 💐</h1>
+            <p>Sevgililer Günümüz Kutlu Olsunnn. İyiki benimsin :)</p>
             <div class="gift">🎁</div>
         </div>
 
-                <div class="video-container" style="margin-top: 20px; border-radius: 15px; overflow: hidden; height: 120px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-    <iframe width="100%" height="120" 
-        src="https://www.youtube.com/embed/Ne3uIrZaWUY?rel=0&modestbranding=1" 
-        title="Sezen Aksu" frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen style="border-radius:15px;">
-    </iframe>
-</div>
-
-
-
-
-
-
-
-
-
+        <div class="video-container">
+            <iframe width="100%" height="100" 
+                src="https://www.youtube.com/embed/Ne3uIrZaWUY" 
+                title="Sezen Aksu" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen style="border-radius:15px;">
+            </iframe>
+        </div>
+    </div>
 
     <script>
         const no = document.getElementById('noBtn');
@@ -73,11 +76,11 @@
         const success = document.getElementById('success');
 
         const move = () => {
-            const x = Math.random() * (window.innerWidth - no.clientWidth);
-            const y = Math.random() * (window.innerHeight - no.clientHeight);
+            const x = Math.random() * (window.innerWidth - no.clientWidth - 50);
+            const y = Math.random() * (window.innerHeight - no.clientHeight - 50);
             no.style.position = 'fixed';
-            no.style.left = x + 'px';
-            no.style.top = y + 'px';
+            no.style.left = Math.max(0, x) + 'px';
+            no.style.top = Math.max(0, y) + 'px';
         };
 
         no.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
@@ -87,23 +90,17 @@
             ask.style.display = 'none';
             success.style.display = 'block';
             
-            // Konfeti Patlatma Ayarları
-            var duration = 3 * 1000;
+            // Konfeti Yağmuru
+            var duration = 4 * 1000;
             var end = Date.now() + duration;
 
             (function frame() {
               confetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
+                particleCount: 5, angle: 60, spread: 55, origin: { x: 0 },
                 colors: ['#ff4d6d', '#ffccd5', '#d63384']
               });
               confetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
+                particleCount: 5, angle: 120, spread: 55, origin: { x: 1 },
                 colors: ['#ff4d6d', '#ffccd5', '#d63384']
               });
 
