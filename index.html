@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Özel Sürpriz 💖</title>
+    <title>Nilay'a Özel 💖</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { 
@@ -11,41 +11,49 @@
             display: flex; justify-content: center; align-items: center; 
             font-family: 'Segoe UI', sans-serif; 
             overflow: hidden;
+            /* ARKA PLAN FOTOĞRAFINIZ - TAM NETLİK */
             background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('IMG_3163.jpeg');
             background-size: cover; background-position: center;
         }
         .card { 
-            background: rgba(255, 255, 255, 0.1); 
+            /* ARKA PLAN TAMAMEN SAYDAM YAPILDI */
+            background: transparent; 
             padding: 30px; border-radius: 35px; 
             text-align: center; width: 85%; max-width: 380px; 
             position: relative; z-index: 10;
-            backdrop-filter: blur(12px); 
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            /* Buzlanma ve beyazlık kaldırıldı */
+            backdrop-filter: none; 
+            border: none;
+            box-shadow: none;
             min-height: 480px;
             display: flex; flex-direction: column; justify-content: space-around;
         }
-        h1 { color: #ffffff; font-size: 26px; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,1); }
-        p { color: #ffffff; font-size: 18px; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,1); }
+        /* YAZILARIN FOTOĞRAF ÜZERİNDE OKUNMASI İÇİN GÜÇLÜ GÖLGELER */
+        h1 { color: #ffffff; font-size: 28px; font-weight: 900; text-shadow: 2px 2px 15px rgba(0,0,0,1); margin-top: 0; }
+        p { color: #ffffff; font-size: 20px; font-weight: 700; text-shadow: 2px 2px 12px rgba(0,0,0,1); }
         
         .btns-container { position: relative; height: 180px; width: 100%; }
         button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        #yesBtn { background-color: #ff4d6d; color: white; position: absolute; left: 10%; top: 40%; z-index: 1001; }
+        #yesBtn { background-color: #ff4d6d; color: white; position: absolute; left: 10%; top: 40%; z-index: 1001; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         
-        /* HAYIR BUTONU: SÜZÜLEN VE KART İÇİNDE HAPİS */
         #noBtn { 
             background-color: rgba(255,255,255,0.95); color: #333; 
             position: absolute; left: 55%; top: 40%;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         #success { display: none; }
         
         /* VIDEO ALANI VE ÖZEL OYNAT BUTONU */
-        .video-wrapper { position: relative; margin-top: 15px; border-radius: 20px; overflow: hidden; height: 100px; border: 1px solid rgba(255,255,255,0.4); background: #000; }
+        .video-wrapper { 
+            position: relative; margin-top: 15px; border-radius: 20px; 
+            overflow: hidden; height: 100px; 
+            border: 1px solid rgba(255,255,255,0.5); background: rgba(0,0,0,0.4); 
+        }
         .play-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
             cursor: pointer; z-index: 1005; transition: 0.3s;
         }
         .play-btn { background: #ff4d6d; color: white; padding: 10px 20px; border-radius: 50px; font-weight: bold; box-shadow: 0 0 15px rgba(255,77,109,0.5); }
@@ -87,7 +95,6 @@
         const iframe = document.getElementById('musicPlayer');
         const container = document.querySelector('.btns-container');
 
-        // HAYIR BUTONU KAÇIŞI (KART İÇİNDE HAPİS)
         const move = () => {
             const maxX = container.clientWidth - no.offsetWidth;
             const maxY = container.clientHeight - no.offsetHeight;
@@ -97,18 +104,15 @@
         no.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
         no.addEventListener('mouseover', move);
 
-        // EVET BUTONU VE KONFETİ
         yes.addEventListener('click', () => {
             document.getElementById('ask').style.display = 'none';
             document.getElementById('success').style.display = 'block';
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
         });
 
-        // OYNAT BUTONU (MOBİL YÖNLENDİRMEYİ ENGELLER)
         customPlay.addEventListener('click', () => {
             customPlay.style.opacity = '0';
             setTimeout(() => customPlay.style.display = 'none', 300);
-            // YouTube API'ye oynat komutu gönderir
             iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         });
     </script>
