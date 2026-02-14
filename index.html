@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nilay'a Özel 💖</title>
+    <title>Özel Sürpriz 💖</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { 
@@ -19,7 +19,7 @@
             padding: 30px; border-radius: 35px; 
             text-align: center; width: 85%; max-width: 380px; 
             position: relative; z-index: 10;
-            backdrop-filter: blur(10px); 
+            backdrop-filter: blur(12px); 
             border: 2px solid rgba(255, 255, 255, 0.4);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             min-height: 480px;
@@ -28,31 +28,28 @@
         h1 { color: #ffffff; font-size: 26px; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,1); }
         p { color: #ffffff; font-size: 18px; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,1); }
         
-        .btns-container {
-            position: relative;
-            height: 180px;
-            width: 100%;
-        }
-        button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        .btns-container { position: relative; height: 180px; width: 100%; }
+        button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; }
         #yesBtn { background-color: #ff4d6d; color: white; position: absolute; left: 10%; top: 40%; z-index: 1001; }
         
+        /* HAYIR BUTONU: SÜZÜLEN VE KART İÇİNDE HAPİS */
         #noBtn { 
             background-color: rgba(255,255,255,0.95); color: #333; 
             position: absolute; left: 55%; top: 40%;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             z-index: 1000;
         }
         #success { display: none; }
-        .gift { font-size: 60px; margin-top: 20px; filter: drop-shadow(0 0 10px white); }
         
-        /* VIDEO ALANI: TIKLANABİLİR VE MOBİL UYUMLU */
-        .video-container { 
-            margin-top: 15px; border-radius: 20px; overflow: hidden; 
-            height: 100px; border: 1px solid rgba(255,255,255,0.4); 
-            background: rgba(0,0,0,0.8);
-            position: relative;
-            z-index: 1002; /* Butonların üzerine çıkmaması için */
+        /* VIDEO ALANI VE ÖZEL OYNAT BUTONU */
+        .video-wrapper { position: relative; margin-top: 15px; border-radius: 20px; overflow: hidden; height: 100px; border: 1px solid rgba(255,255,255,0.4); background: #000; }
+        .play-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 1005; transition: 0.3s;
         }
+        .play-btn { background: #ff4d6d; color: white; padding: 10px 20px; border-radius: 50px; font-weight: bold; box-shadow: 0 0 15px rgba(255,77,109,0.5); }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -69,13 +66,15 @@
         <div id="success">
             <h1>Seni Çok Seviyorumm 💐</h1>
             <p>Sevgililer Günümüz Kutlu Olsun...</p>
-            <div class="gift">🎁</div>
         </div>
 
-        <div class="video-container">
-            <iframe width="100%" height="100" 
+        <div class="video-wrapper">
+            <div class="play-overlay" id="customPlay">
+                <div class="play-btn">Müziği Oynat ▶️</div>
+            </div>
+            <iframe id="musicPlayer" 
                 src="https://www.youtube.com/embed/Ne3uIrZaWUY?enablejsapi=1&playsinline=1" 
-                frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen>
             </iframe>
         </div>
@@ -84,34 +83,33 @@
     <script>
         const no = document.getElementById('noBtn');
         const yes = document.getElementById('yesBtn');
-        const ask = document.getElementById('ask');
-        const success = document.getElementById('success');
+        const customPlay = document.getElementById('customPlay');
+        const iframe = document.getElementById('musicPlayer');
         const container = document.querySelector('.btns-container');
 
+        // HAYIR BUTONU KAÇIŞI (KART İÇİNDE HAPİS)
         const move = () => {
-            // Butonu KART sınırları içinde tutan kesin hesap
             const maxX = container.clientWidth - no.offsetWidth;
             const maxY = container.clientHeight - no.offsetHeight;
-            
-            const newX = Math.random() * maxX;
-            const newY = Math.random() * maxY;
-
-            no.style.left = newX + 'px';
-            no.style.top = newY + 'px';
+            no.style.left = Math.random() * maxX + 'px';
+            no.style.top = Math.random() * maxY + 'px';
         };
-
         no.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
         no.addEventListener('mouseover', move);
 
+        // EVET BUTONU VE KONFETİ
         yes.addEventListener('click', () => {
-            ask.style.display = 'none';
-            success.style.display = 'block';
-            var duration = 5 * 1000; var end = Date.now() + duration;
-            (function frame() {
-              confetti({ particleCount: 7, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
-              confetti({ particleCount: 7, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
-              if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            document.getElementById('ask').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+        });
+
+        // OYNAT BUTONU (MOBİL YÖNLENDİRMEYİ ENGELLER)
+        customPlay.addEventListener('click', () => {
+            customPlay.style.opacity = '0';
+            setTimeout(() => customPlay.style.display = 'none', 300);
+            // YouTube API'ye oynat komutu gönderir
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         });
     </script>
 </body>
