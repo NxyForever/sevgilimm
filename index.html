@@ -11,33 +11,41 @@
             display: flex; justify-content: center; align-items: center; 
             font-family: 'Segoe UI', sans-serif; 
             overflow: hidden;
+            /* ARKA PLAN FOTOĞRAFINIZ */
             background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('IMG_3163.jpeg');
-            background-size: cover; background-position: center;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         .card { 
-            background: rgba(255, 255, 255, 0.1); 
+            /* CANLI VE SAYDAM BUZLU CAM */
+            background: rgba(255, 255, 255, 0.05); 
             padding: 30px; border-radius: 30px; 
             text-align: center; width: 85%; max-width: 380px; 
             position: relative; z-index: 10;
-            backdrop-filter: blur(5px); 
+            backdrop-filter: blur(4px); 
             border: 2px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
-        h1 { color: #ffffff; font-size: 26px; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,1); }
+        h1 { color: #ffffff; font-size: 26px; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,1); margin-top: 0; }
         p { color: #ffffff; font-size: 18px; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,1); }
-        .btns { display: flex; justify-content: center; gap: 15px; height: 50px; position: relative; }
-        button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        #yesBtn { background-color: #ff4d6d; color: white; }
+        .btns { display: flex; justify-content: center; gap: 15px; height: 50px; position: relative; margin-top: 20px; }
+        button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        #yesBtn { background-color: #ff4d6d; color: white; z-index: 1001; }
+        /* HAYIR BUTONU ANİMASYONLU KAÇIŞ */
         #noBtn { 
-            background-color: rgba(255,255,255,0.95); color: #333; 
-            position: fixed; /* Ekranın her yerinde gezsin */
+            background-color: rgba(255,255,255,0.9); color: #333; 
+            position: fixed; /* Ekranın her yerinde gezebilmesi için fixed yaptık */
             left: 55%; 
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Süzülme efekti */
-            z-index: 9999; /* En üstte kalsın */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            z-index: 1000;
         }
         #success { display: none; }
         .gift { font-size: 60px; margin-top: 20px; filter: drop-shadow(0 0 10px white); }
-        .video-container { margin-top: 25px; border-radius: 20px; overflow: hidden; height: 100px; border: 1px solid rgba(255,255,255,0.3); }
+        /* VIDEO SİTE İÇİNDE KALMA AYARI */
+        .video-container { 
+            margin-top: 25px; border-radius: 20px; overflow: hidden; 
+            height: 90px; border: 1px solid rgba(255,255,255,0.3); 
+            background: black;
+        }
     </style>
 </head>
 <body>
@@ -56,9 +64,10 @@
             <div class="gift">🎁</div>
         </div>
         <div class="video-container">
-            <iframe width="100%" height="100" 
-                src="https://www.youtube.com/embed/S0E6D-p7EEY?playsinline=1&enablejsapi=1" 
-                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            <iframe width="100%" height="90" 
+                src="https://www.youtube.com/embed/Ne3uIrZaWUY?playsinline=1&modestbranding=1&rel=0" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
             </iframe>
         </div>
     </div>
@@ -71,17 +80,20 @@
         const move = () => {
             const btnWidth = no.offsetWidth;
             const btnHeight = no.offsetHeight;
-            const maxX = window.innerWidth - btnWidth - 30;
-            const maxY = window.innerHeight - btnHeight - 30;
+            // Butonun ekrandan dışarı taşmaması için güvenli alan (padding)
+            const margin = 20;
+            const maxX = window.innerWidth - btnWidth - margin;
+            const maxY = window.innerHeight - btnHeight - margin;
             
-            // Koordinatlar her zaman pozitif ve ekran içinde olacak
-            const newX = Math.max(20, Math.random() * maxX);
-            const newY = Math.max(20, Math.random() * maxY);
+            // Rastgele ama ekran içinde kalan koordinatlar
+            const newX = Math.max(margin, Math.random() * maxX);
+            const newY = Math.max(margin, Math.random() * maxY);
 
             no.style.left = newX + 'px';
             no.style.top = newY + 'px';
         };
 
+        // Hayır butonu hem dokununca hem üstüne gelince süzülerek kaçar
         no.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
         no.addEventListener('mouseover', move);
 
