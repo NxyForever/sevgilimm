@@ -11,8 +11,6 @@
             display: flex; justify-content: center; align-items: center; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             overflow: hidden;
-            
-            /* ARKA PLAN FOTOĞRAFI - TAM NETLİK */
             background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('IMG_3163.jpeg');
             background-size: cover;
             background-position: center;
@@ -20,50 +18,39 @@
             background-attachment: fixed;
         }
         .card { 
-            /* CANLI SAYDAM KART (BEYAZLIK SIFIRA YAKIN) */
+            /* CANLI SAYDAM KART */
             background: rgba(255, 255, 255, 0.01); 
             padding: 30px; 
             border-radius: 30px; 
             text-align: center; width: 85%; max-width: 380px; 
             position: relative; z-index: 10;
-            
-            /* CAM EFEKTİNİ CANLI YAPAN AYARLAR */
-            backdrop-filter: blur(2px); /* Çok az bulanıklık ki fotoğraf net kalsın */
-            border: 2px solid rgba(255, 255, 255, 0.3); /* Parlayan kenarlar */
+            backdrop-filter: blur(2px); 
+            border: 2px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
-        /* YAZILARIN KAR ÜSTÜNDE PARLAMASI İÇİN */
         h1 { 
-            color: #ffffff; 
-            font-size: 28px; font-weight: 900;
-            margin-bottom: 20px; 
+            color: #ffffff; font-size: 28px; font-weight: 900; margin-bottom: 20px; 
             text-shadow: 0 0 15px rgba(214, 51, 132, 0.8), 2px 2px 5px rgba(0,0,0,1);
         }
         p { 
-            color: #ffffff;
-            font-size: 19px; font-weight: 700;
-            margin-bottom: 25px; 
+            color: #ffffff; font-size: 19px; font-weight: 700; margin-bottom: 25px; 
             text-shadow: 2px 2px 8px rgba(0,0,0,1);
         }
         .btns { display: flex; justify-content: center; gap: 15px; height: 50px; position: relative; }
         button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; }
         #yesBtn { background-color: #ff4d6d; color: white; box-shadow: 0 5px 20px rgba(255, 77, 109, 0.6); }
-        #noBtn { background-color: rgba(255,255,255,0.95); color: #333; position: absolute; left: 55%; }
+        /* HAYIR BUTONU ARTIK ANİMASYONLA SÜZÜLECEK */
+        #noBtn { 
+            background-color: rgba(255,255,255,0.95); color: #333; 
+            position: absolute; left: 55%; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Süzülme efekti */
+        }
         #success { display: none; }
         .gift { font-size: 65px; margin-top: 20px; filter: drop-shadow(0 0 10px white); }
-        
-        /* VIDEO SİTE İÇİNDE TUTMA (INLINE) AYARI */
-        .video-container { 
-            margin-top: 25px; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            height: 90px; 
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+        .video-container { margin-top: 25px; border-radius: 20px; overflow: hidden; height: 90px; border: 1px solid rgba(255,255,255,0.2);}
     </style>
 </head>
 <body>
-
     <div class="card">
         <div id="ask">
             <h1>Nilayımmmmmmm 💐</h1>
@@ -73,23 +60,18 @@
                 <button id="noBtn">Hayır</button>
             </div>
         </div>
-
         <div id="success">
             <h1>Seni Çok Seviyorumm 💐</h1>
             <p>Sevgililer Günümüz Kutlu Olsun Nilay'ım...</p>
             <div class="gift">🎁</div>
         </div>
-
         <div class="video-container">
             <iframe width="100%" height="90" 
                 src="https://www.youtube.com/embed/Ne3uIrZaWUY?playsinline=1&modestbranding=1&rel=0" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
         </div>
     </div>
-
     <script>
         const no = document.getElementById('noBtn');
         const yes = document.getElementById('yesBtn');
@@ -97,21 +79,28 @@
         const success = document.getElementById('success');
 
         const move = () => {
-            const maxX = window.innerWidth - no.offsetWidth - 20;
-            const maxY = window.innerHeight - no.offsetHeight - 20;
-            no.style.position = 'fixed';
-            no.style.left = Math.max(10, Math.random() * maxX) + 'px';
-            no.style.top = Math.max(10, Math.random() * maxY) + 'px';
+            // Butonun yeni konumu ekran sınırları içinde ve görülebilir olsun
+            const maxX = window.innerWidth - no.offsetWidth - 30;
+            const maxY = window.innerHeight - no.offsetHeight - 30;
+            const newX = Math.max(30, Math.random() * maxX);
+            const newY = Math.max(30, Math.random() * maxY);
+
+            // 'fixed' yerine 'absolute' kullanarak kartın dışına kaçmasını engelliyoruz
+            // ama butonun kaybolmaması için z-index'i koruyoruz
+            no.style.position = 'fixed'; 
+            no.style.left = newX + 'px';
+            no.style.top = newY + 'px';
+            no.style.zIndex = '1000'; // Her zaman en üstte
         };
 
+        // Hem dokununca hem üstüne gelince animasyonla kaysın
         no.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
         no.addEventListener('mouseover', move);
 
         yes.addEventListener('click', () => {
             ask.style.display = 'none';
             success.style.display = 'block';
-            var duration = 5 * 1000;
-            var end = Date.now() + duration;
+            var duration = 5 * 1000; var end = Date.now() + duration;
             (function frame() {
               confetti({ particleCount: 7, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff', '#ffccd5'] });
               confetti({ particleCount: 7, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff', '#ffccd5'] });
