@@ -20,26 +20,25 @@
             padding: 30px; border-radius: 35px; 
             text-align: center; width: 85%; max-width: 380px; 
             position: relative; z-index: 10;
-            backdrop-filter: blur(8px); 
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            /* Butonların kart içinde kalması için yükseklik sınırı */
+            backdrop-filter: blur(12px); 
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             min-height: 450px;
-            display: flex; flex-direction: column; justify-content: space-between;
+            display: flex; flex-direction: column; justify-content: center;
         }
-        h1 { color: #ffffff; font-size: 26px; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,1); margin-top: 10px; }
+        h1 { color: #ffffff; font-size: 26px; font-weight: 900; text-shadow: 2px 2px 10px rgba(0,0,0,1); margin-top: 0; }
         p { color: #ffffff; font-size: 18px; font-weight: 700; text-shadow: 2px 2px 8px rgba(0,0,0,1); }
         
         .btns-container {
             position: relative;
-            height: 200px; /* Butonun kaçacağı alan */
+            height: 150px; /* Butonun kaçacağı alan */
             width: 100%;
-            margin: 10px 0;
+            margin: 20px 0;
         }
         button { padding: 12px 28px; border: none; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; z-index: 1001; }
         #yesBtn { background-color: #ff4d6d; color: white; position: absolute; left: 10%; top: 40%; }
         
-        /* HAYIR BUTONU: ARTIK KARTIN İÇİNDE HAPİS */
+        /* HAYIR BUTONU: ARTIK KARTIN İÇİNDE HAPİS VE ANİMASYONLU */
         #noBtn { 
             background-color: rgba(255,255,255,0.95); color: #333; 
             position: absolute; left: 55%; top: 40%;
@@ -48,10 +47,10 @@
         #success { display: none; }
         .gift { font-size: 60px; margin-top: 20px; filter: drop-shadow(0 0 10px white); }
         
-        /* VIDEO ALANI: MOBİLDE UYGULAMAYA ATMAYI ENGELLEYEN AYARLAR */
+        /* VIDEO ALANI */
         .video-container { 
-            margin-top: 10px; border-radius: 20px; overflow: hidden; 
-            height: 90px; border: 1px solid rgba(255,255,255,0.3); 
+            margin-top: 20px; border-radius: 20px; overflow: hidden; 
+            height: 90px; border: 1px solid rgba(255,255,255,0.4); 
             background: rgba(0,0,0,0.8);
         }
     </style>
@@ -74,8 +73,8 @@
         </div>
 
         <div class="video-container">
-            <iframe id="youtube-audio" width="100%" height="90" 
-                src="https://www.youtube.com/embed/Ne3uIrZaWUY?enablejsapi=1&playsinline=1" 
+            <iframe id="musicPlayer" width="100%" height="90" 
+                src="https://www.youtube.com/embed/Ne3uIrZaWUY?enablejsapi=1&playsinline=1&rel=0" 
                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
         </div>
@@ -87,10 +86,10 @@
         const ask = document.getElementById('ask');
         const success = document.getElementById('success');
         const container = document.querySelector('.btns-container');
-        const iframe = document.getElementById('youtube-audio');
+        const music = document.getElementById('musicPlayer');
 
         const move = () => {
-            // Butonun KART içindeki sınırlarını hesapla
+            // Butonun KART içindeki sınırları
             const maxX = container.clientWidth - no.offsetWidth;
             const maxY = container.clientHeight - no.offsetHeight;
             
@@ -108,8 +107,8 @@
             ask.style.display = 'none';
             success.style.display = 'block';
             
-            // Müziği Evet'e basıldığı an başlatır (Autoplay engeline takılmaz)
-            iframe.src += "&autoplay=1";
+            // Müzik "Evet"e basıldığı an başlar (Autoplay engelini aşar)
+            music.src += "&autoplay=1";
             
             var duration = 5 * 1000; var end = Date.now() + duration;
             (function frame() {
